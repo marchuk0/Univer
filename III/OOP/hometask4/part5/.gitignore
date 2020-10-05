@@ -1,0 +1,10 @@
+/gradlew
+/gradlew.bat
+/settings.gradle
+/gradle/
+/.idea/
+/.gradle/
+/spring-shell.log
+/build/
+dependency-reduced-pom.xml
+target
