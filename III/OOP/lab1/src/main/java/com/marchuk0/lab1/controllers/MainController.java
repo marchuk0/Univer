@@ -27,7 +27,7 @@ public class MainController implements Initializable {
     private static final int START_COLUMNS = 40;
     private static final int START_ROWS = 40;
     private static final int MIN_CELL_WIDTH = 70;
-    private static final String FILE_TEXT = "TXT files (*.marchuk)";
+    private static final String FILE_TEXT = "My files files (*.marchuk)";
     private static final String FILE_EXTENSION = "*.marchuk";
     private static ObservableList<HashMap<String, Cell>> table = SpreadSheetHelper.table;
 
