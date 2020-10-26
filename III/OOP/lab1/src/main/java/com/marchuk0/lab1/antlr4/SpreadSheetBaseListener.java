@@ -52,6 +52,18 @@ public class SpreadSheetBaseListener implements SpreadSheetListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMultiplication(SpreadSheetParser.MultiplicationContext ctx) { }
 	/**
 	 * {@inheritDoc}

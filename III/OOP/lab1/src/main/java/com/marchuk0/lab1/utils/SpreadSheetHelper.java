@@ -1,4 +1,4 @@
-package com.marchuk0.lab1;
+package com.marchuk0.lab1.utils;
 
 import com.marchuk0.lab1.antlr4.SpreadSheetLexer;
 import com.marchuk0.lab1.antlr4.SpreadSheetParser;
@@ -12,9 +12,11 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.Map;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class SpreadSheetHelper {
     private final static String ROW_LETTER = "R";
@@ -22,11 +24,11 @@ public class SpreadSheetHelper {
     private final static String START_CHAR = "=";
     private final static String ZERO_COLUMN_NAME = "";
 
-    public static final ObservableList<HashMap<String, Cell>> table = FXCollections.observableArrayList();
+    public static ObservableList<HashMap<String, Cell>> table = FXCollections.observableArrayList();
 
 
     public static String intToColumnNumber(int i) {
-        if (i <= 0) {
+        if (i < 0) {
             return ZERO_COLUMN_NAME;
         }
         return COLUMN_LETTER + i;
@@ -37,23 +39,22 @@ public class SpreadSheetHelper {
     }
 
 
-    public static int NumberToInt(String number) {
-        return Integer.parseInt(number.substring(1));
-    }
-
     public static String evalExpression(String expression) {
         if (expression.startsWith(START_CHAR)) {
             expression = replaceVariables(expression);
-            System.out.println(expression);
             return evalFormula(expression);
         } else {
             return expression;
         }
     }
 
-    public static String replaceVariables(String expression) {
+    private static Matcher getMatcher(String expression) {
         Pattern pattern = Pattern.compile("(R)([0-9]+)(C)([0-9]+)");
-        Matcher matcher = pattern.matcher(expression);
+        return pattern.matcher(expression);
+    }
+
+    public static String replaceVariables(String expression) {
+        Matcher matcher = getMatcher(expression);
 
         String integerString = matcher.replaceAll(matchResult -> {
             String cellString = matchResult.group();
@@ -63,12 +64,27 @@ public class SpreadSheetHelper {
         return integerString;
     }
 
+    public static List<Cell> getCellsFromExpression(String expression) {
+        if(!expression.startsWith(START_CHAR)) {
+            return List.of();
+        }
+
+        Matcher matcher = getMatcher(expression);
+        return matcher.results().map(matchResult -> {
+            String cellString = matchResult.group();
+            String[] rowAndColumn = cellString.replace(ROW_LETTER, "").split(COLUMN_LETTER);
+            return table.get(Integer.parseInt(rowAndColumn[0])).get(COLUMN_LETTER + rowAndColumn[1]);
+        })
+                .collect(Collectors.toList());
+    }
+
 
     private static String evalFormula(String formula) {
         CharStream stream = CharStreams.fromString(formula);
         SpreadSheetLexer lexer = new SpreadSheetLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SpreadSheetParser parser = new SpreadSheetParser(tokens);
+
         parser.addErrorListener(new ANTLRErrorListener() {
             @Override
             public void syntaxError(Recognizer<?, ?> recognizer, Object o, int i, int i1, String s, RecognitionException e) {

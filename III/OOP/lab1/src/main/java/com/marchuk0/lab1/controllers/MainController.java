@@ -1,5 +1,7 @@
-package com.marchuk0.lab1;
+package com.marchuk0.lab1.controllers;
 
+import com.marchuk0.lab1.utils.Cell;
+import com.marchuk0.lab1.utils.SpreadSheetHelper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,19 +24,14 @@ import java.util.stream.IntStream;
 
 public class MainController implements Initializable {
 
-    private static final int START_COLUMNS = 50;
-    private static final int START_ROWS = 50;
+    private static final int START_COLUMNS = 40;
+    private static final int START_ROWS = 40;
     private static final int MIN_CELL_WIDTH = 70;
+    private static final String FILE_TEXT = "TXT files (*.marchuk)";
+    private static final String FILE_EXTENSION = "*.marchuk";
     private static ObservableList<HashMap<String, Cell>> table = SpreadSheetHelper.table;
 
-    @FXML
-    public Button addColumn;
-    @FXML
-    public Button deleteColumn;
-    @FXML
-    public Button addRow;
-    @FXML
-    public Button deleteRow;
+
     @FXML
     public Button saveFile;
     @FXML
@@ -46,7 +43,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableView.setEditable(true);
-        initTable();
+        initTable(START_COLUMNS, START_ROWS);
         tableView.setItems(table);
 
         saveFile.setOnAction(this::saveFileAction);
@@ -56,17 +53,21 @@ public class MainController implements Initializable {
     private void openFileAction(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(FILE_TEXT, FILE_EXTENSION);
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null) {
             try (FileInputStream fin = new FileInputStream(file);
-                 ObjectInputStream oos = new ObjectInputStream(fin);) {
+                 ObjectInputStream oos = new ObjectInputStream(fin)) {
                 ArrayList<HashMap<String, Cell>> toReadObject;
                 toReadObject = (ArrayList<HashMap<String, Cell>>) oos.readObject();
                 table = FXCollections.observableList(toReadObject);
+                SpreadSheetHelper.table = table;
+                tableView.getColumns().clear();
+                tableView.setItems(FXCollections.observableArrayList());
+                initTable(table.size(), table.get(0).size());
                 tableView.setItems(table);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -77,14 +78,14 @@ public class MainController implements Initializable {
     private void saveFileAction(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(FILE_TEXT, FILE_EXTENSION);
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showSaveDialog(null);
 
         if (file != null) {
             try (FileOutputStream fout = new FileOutputStream(file);
-                 ObjectOutputStream oos = new ObjectOutputStream(fout);) {
+                 ObjectOutputStream oos = new ObjectOutputStream(fout)) {
                 ArrayList<HashMap<String, Cell>> toWriteObject = new ArrayList<>(table);
                 oos.writeObject(toWriteObject);
             } catch (Exception ex) {
@@ -94,17 +95,20 @@ public class MainController implements Initializable {
     }
 
 
-    private void initTable() {
-        addColumns();
-        addRows();
+    private void initTable(int columnNumber, int rowNumber) {
+//        tableView.getColumns().clear();
+        addColumns(columnNumber);
+        if (table.size() == 0) {
+            addRows(columnNumber, rowNumber);
+        }
     }
 
-    private void addRows() {
-        for (int i = 0; i <= START_ROWS; i++) {
+    private void addRows(int columnNumber, int rowNumber) {
+        for (int i = 0; i <= rowNumber; i++) {
             final int row = i;
             table.add(
                     (HashMap<String, Cell>) IntStream
-                            .rangeClosed(0, START_COLUMNS)
+                            .rangeClosed(-1, columnNumber)
                             .boxed()
                             .collect(Collectors.toMap(
                                     SpreadSheetHelper::intToColumnNumber,
@@ -113,19 +117,21 @@ public class MainController implements Initializable {
         }
     }
 
-    private void addColumns() {
+    private void addColumns(int columnNumber) {
         addZeroColumn();
-        for (int i = 1; i <= START_COLUMNS; i++) {
+        for (int i = 0; i <= columnNumber; i++) {
             addColumn(i);
         }
     }
 
     private void addZeroColumn() {
-        TableColumn<HashMap<String, Cell>, String> column = new TableColumn<>("");
+        String columnName = SpreadSheetHelper.intToColumnNumber(-1);
+        TableColumn<HashMap<String, Cell>, String> column = new TableColumn<>(columnName);
 
         column.setCellFactory(TextFieldTableCell.forTableColumn());
-        column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().get("").getCalculatedValue()));
+        column.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().get(columnName).getRowNumber()));
         column.setMinWidth(55);
+        column.setEditable(false);
         column.setSortable(false);
 
         tableView.getColumns().add(column);
@@ -136,7 +142,7 @@ public class MainController implements Initializable {
         TableColumn<HashMap<String, Cell>, String> column = new TableColumn<>(columnName);
 
         column.setCellFactory(TextFieldTableCell.forTableColumn());
-        column.setCellValueFactory(cell -> cell.getValue().get(columnName).getShowValue());
+        column.setCellValueFactory(cell -> cell.getValue().getOrDefault(columnName, new Cell()).getShowValue());
 
         column.setMinWidth(MIN_CELL_WIDTH);
         column.setSortable(false);

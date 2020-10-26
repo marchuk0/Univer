@@ -24,6 +24,10 @@ public class SpreadSheetSuperVisitor extends SpreadSheetBaseVisitor<Integer> {
     public Integer visitNumber(SpreadSheetParser.NumberContext ctx) {
         return Integer.parseInt(ctx.NUMBER().getText());
     }
+    @Override public Integer visitUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx) {
+        return -Integer.parseInt(ctx.NUMBER().getText());
+    }
+
 
     @Override
     public Integer visitParentheses(SpreadSheetParser.ParenthesesContext ctx) {

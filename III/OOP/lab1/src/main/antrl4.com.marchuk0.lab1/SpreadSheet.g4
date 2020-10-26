@@ -38,6 +38,7 @@ expression
    | left=expression operator=DIV right=expression  # Division
    | left=expression operator=ADD right=expression  # Addition
    | left=expression operator=SUB right=expression  # Subtraction
+   | SUB NUMBER #UnarySubtraction
    ;
 
 minargs

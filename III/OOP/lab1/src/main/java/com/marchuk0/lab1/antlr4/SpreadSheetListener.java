@@ -42,6 +42,18 @@ public interface SpreadSheetListener extends ParseTreeListener {
 	 */
 	void exitMaximum(SpreadSheetParser.MaximumContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code UnarySubtraction}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnarySubtraction}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link SpreadSheetParser#expression}.
 	 * @param ctx the parse tree

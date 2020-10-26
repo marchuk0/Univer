@@ -31,6 +31,13 @@ public interface SpreadSheetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMaximum(SpreadSheetParser.MaximumContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code UnarySubtraction}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Multiplication}
 	 * labeled alternative in {@link SpreadSheetParser#expression}.
 	 * @param ctx the parse tree
