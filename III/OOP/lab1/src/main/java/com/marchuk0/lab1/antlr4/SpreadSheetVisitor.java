@@ -66,6 +66,20 @@ public interface SpreadSheetVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumber(SpreadSheetParser.NumberContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Decrement}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecrement(SpreadSheetParser.DecrementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Increment}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIncrement(SpreadSheetParser.IncrementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link SpreadSheetParser#expression}.
 	 * @param ctx the parse tree

@@ -96,7 +96,6 @@ public class MainController implements Initializable {
 
 
     private void initTable(int columnNumber, int rowNumber) {
-//        tableView.getColumns().clear();
         addColumns(columnNumber);
         if (table.size() == 0) {
             addRows(columnNumber, rowNumber);

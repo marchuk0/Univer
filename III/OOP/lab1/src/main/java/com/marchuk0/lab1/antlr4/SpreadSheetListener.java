@@ -102,6 +102,30 @@ public interface SpreadSheetListener extends ParseTreeListener {
 	 */
 	void exitNumber(SpreadSheetParser.NumberContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Decrement}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecrement(SpreadSheetParser.DecrementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Decrement}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecrement(SpreadSheetParser.DecrementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Increment}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncrement(SpreadSheetParser.IncrementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Increment}
+	 * labeled alternative in {@link SpreadSheetParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncrement(SpreadSheetParser.IncrementContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Division}
 	 * labeled alternative in {@link SpreadSheetParser#expression}.
 	 * @param ctx the parse tree

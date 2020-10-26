@@ -33,6 +33,8 @@ expression
    | LPAR inner=expression RPAR                     # Parentheses
    | operator = MMIN LPAR inner=minargs RPAR        # Minimum
    | operator = MMAX LPAR inner=maxargs RPAR        # Maximum
+   | operator = INC LPAR inner=expression RPAR      # Increment
+   | operator = DEC LPAR inner=expression RPAR      # Decrement
    | left=expression operator=POW right=expression  # Power
    | left=expression operator=MUL right=expression  # Multiplication
    | left=expression operator=DIV right=expression  # Division

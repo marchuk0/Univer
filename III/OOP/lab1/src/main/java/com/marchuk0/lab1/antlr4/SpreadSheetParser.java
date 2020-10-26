@@ -313,6 +313,54 @@ public class SpreadSheetParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class DecrementContext extends ExpressionContext {
+		public Token operator;
+		public ExpressionContext inner;
+		public TerminalNode LPAR() { return getToken(SpreadSheetParser.LPAR, 0); }
+		public TerminalNode RPAR() { return getToken(SpreadSheetParser.RPAR, 0); }
+		public TerminalNode DEC() { return getToken(SpreadSheetParser.DEC, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public DecrementContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SpreadSheetListener ) ((SpreadSheetListener)listener).enterDecrement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SpreadSheetListener ) ((SpreadSheetListener)listener).exitDecrement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SpreadSheetVisitor ) return ((SpreadSheetVisitor<? extends T>)visitor).visitDecrement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IncrementContext extends ExpressionContext {
+		public Token operator;
+		public ExpressionContext inner;
+		public TerminalNode LPAR() { return getToken(SpreadSheetParser.LPAR, 0); }
+		public TerminalNode RPAR() { return getToken(SpreadSheetParser.RPAR, 0); }
+		public TerminalNode INC() { return getToken(SpreadSheetParser.INC, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public IncrementContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SpreadSheetListener ) ((SpreadSheetListener)listener).enterIncrement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SpreadSheetListener ) ((SpreadSheetListener)listener).exitIncrement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SpreadSheetVisitor ) return ((SpreadSheetVisitor<? extends T>)visitor).visitIncrement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class DivisionContext extends ExpressionContext {
 		public ExpressionContext left;
 		public Token operator;
@@ -403,7 +451,7 @@ public class SpreadSheetParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(30);
+			setState(40);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NUMBER:
@@ -459,14 +507,44 @@ public class SpreadSheetParser extends Parser {
 				match(RPAR);
 				}
 				break;
+			case INC:
+				{
+				_localctx = new IncrementContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(28);
+				((IncrementContext)_localctx).operator = match(INC);
+				setState(29);
+				match(LPAR);
+				setState(30);
+				((IncrementContext)_localctx).inner = expression(0);
+				setState(31);
+				match(RPAR);
+				}
+				break;
+			case DEC:
+				{
+				_localctx = new DecrementContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(33);
+				((DecrementContext)_localctx).operator = match(DEC);
+				setState(34);
+				match(LPAR);
+				setState(35);
+				((DecrementContext)_localctx).inner = expression(0);
+				setState(36);
+				match(RPAR);
+				}
+				break;
 			case SUB:
 				{
 				_localctx = new UnarySubtractionContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(28);
+				setState(38);
 				match(SUB);
-				setState(29);
+				setState(39);
 				match(NUMBER);
 				}
 				break;
@@ -474,7 +552,7 @@ public class SpreadSheetParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(49);
+			setState(59);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -482,7 +560,7 @@ public class SpreadSheetParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(47);
+					setState(57);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 					case 1:
@@ -490,11 +568,11 @@ public class SpreadSheetParser extends Parser {
 						_localctx = new PowerContext(new ExpressionContext(_parentctx, _parentState));
 						((PowerContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(32);
+						setState(42);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(33);
+						setState(43);
 						((PowerContext)_localctx).operator = match(POW);
-						setState(34);
+						setState(44);
 						((PowerContext)_localctx).right = expression(7);
 						}
 						break;
@@ -503,11 +581,11 @@ public class SpreadSheetParser extends Parser {
 						_localctx = new MultiplicationContext(new ExpressionContext(_parentctx, _parentState));
 						((MultiplicationContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(35);
+						setState(45);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(36);
+						setState(46);
 						((MultiplicationContext)_localctx).operator = match(MUL);
-						setState(37);
+						setState(47);
 						((MultiplicationContext)_localctx).right = expression(6);
 						}
 						break;
@@ -516,11 +594,11 @@ public class SpreadSheetParser extends Parser {
 						_localctx = new DivisionContext(new ExpressionContext(_parentctx, _parentState));
 						((DivisionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(38);
+						setState(48);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(39);
+						setState(49);
 						((DivisionContext)_localctx).operator = match(DIV);
-						setState(40);
+						setState(50);
 						((DivisionContext)_localctx).right = expression(5);
 						}
 						break;
@@ -529,11 +607,11 @@ public class SpreadSheetParser extends Parser {
 						_localctx = new AdditionContext(new ExpressionContext(_parentctx, _parentState));
 						((AdditionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(41);
+						setState(51);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(42);
+						setState(52);
 						((AdditionContext)_localctx).operator = match(ADD);
-						setState(43);
+						setState(53);
 						((AdditionContext)_localctx).right = expression(4);
 						}
 						break;
@@ -542,18 +620,18 @@ public class SpreadSheetParser extends Parser {
 						_localctx = new SubtractionContext(new ExpressionContext(_parentctx, _parentState));
 						((SubtractionContext)_localctx).left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(44);
+						setState(54);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(45);
+						setState(55);
 						((SubtractionContext)_localctx).operator = match(SUB);
-						setState(46);
+						setState(56);
 						((SubtractionContext)_localctx).right = expression(3);
 						}
 						break;
 					}
 					} 
 				}
-				setState(51);
+				setState(61);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			}
@@ -628,14 +706,14 @@ public class SpreadSheetParser extends Parser {
 		MinargsContext _localctx = new MinargsContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_minargs);
 		try {
-			setState(57);
+			setState(67);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				_localctx = new SimpleMinArgsContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(52);
+				setState(62);
 				expression(0);
 				}
 				break;
@@ -643,11 +721,11 @@ public class SpreadSheetParser extends Parser {
 				_localctx = new RecursiveMinArgsContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(53);
+				setState(63);
 				expression(0);
-				setState(54);
+				setState(64);
 				match(ARGSEPARATOP);
-				setState(55);
+				setState(65);
 				minargs();
 				}
 				break;
@@ -722,14 +800,14 @@ public class SpreadSheetParser extends Parser {
 		MaxargsContext _localctx = new MaxargsContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_maxargs);
 		try {
-			setState(64);
+			setState(74);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				_localctx = new SimpleMaxArgsContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(59);
+				setState(69);
 				expression(0);
 				}
 				break;
@@ -737,11 +815,11 @@ public class SpreadSheetParser extends Parser {
 				_localctx = new RecursiveMAxArgsContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(60);
+				setState(70);
 				expression(0);
-				setState(61);
+				setState(71);
 				match(ARGSEPARATOP);
-				setState(62);
+				setState(72);
 				maxargs();
 				}
 				break;
@@ -782,24 +860,26 @@ public class SpreadSheetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21E\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21O\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3!\n\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\7\3\62\n\3\f\3\16\3\65\13\3\3\4\3"+
-		"\4\3\4\3\4\3\4\5\4<\n\4\3\5\3\5\3\5\3\5\3\5\5\5C\n\5\3\5\2\3\4\6\2\4\6"+
-		"\b\2\2\2K\2\n\3\2\2\2\4 \3\2\2\2\6;\3\2\2\2\bB\3\2\2\2\n\13\7\3\2\2\13"+
-		"\f\5\4\3\2\f\r\7\2\2\3\r\3\3\2\2\2\16\17\b\3\1\2\17!\7\20\2\2\20\21\7"+
-		"\t\2\2\21\22\5\4\3\2\22\23\7\n\2\2\23!\3\2\2\2\24\25\7\r\2\2\25\26\7\t"+
-		"\2\2\26\27\5\6\4\2\27\30\7\n\2\2\30!\3\2\2\2\31\32\7\16\2\2\32\33\7\t"+
-		"\2\2\33\34\5\b\5\2\34\35\7\n\2\2\35!\3\2\2\2\36\37\7\b\2\2\37!\7\20\2"+
-		"\2 \16\3\2\2\2 \20\3\2\2\2 \24\3\2\2\2 \31\3\2\2\2 \36\3\2\2\2!\63\3\2"+
-		"\2\2\"#\f\b\2\2#$\7\4\2\2$\62\5\4\3\t%&\f\7\2\2&\'\7\5\2\2\'\62\5\4\3"+
-		"\b()\f\6\2\2)*\7\6\2\2*\62\5\4\3\7+,\f\5\2\2,-\7\7\2\2-\62\5\4\3\6./\f"+
-		"\4\2\2/\60\7\b\2\2\60\62\5\4\3\5\61\"\3\2\2\2\61%\3\2\2\2\61(\3\2\2\2"+
-		"\61+\3\2\2\2\61.\3\2\2\2\62\65\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2\2\64"+
-		"\5\3\2\2\2\65\63\3\2\2\2\66<\5\4\3\2\678\5\4\3\289\7\17\2\29:\5\6\4\2"+
-		":<\3\2\2\2;\66\3\2\2\2;\67\3\2\2\2<\7\3\2\2\2=C\5\4\3\2>?\5\4\3\2?@\7"+
-		"\17\2\2@A\5\b\5\2AC\3\2\2\2B=\3\2\2\2B>\3\2\2\2C\t\3\2\2\2\7 \61\63;B";
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\5\3+\n\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\7\3<\n\3\f\3\16\3?\13\3\3\4\3\4\3\4\3\4\3\4\5\4F\n\4\3\5\3\5\3"+
+		"\5\3\5\3\5\5\5M\n\5\3\5\2\3\4\6\2\4\6\b\2\2\2W\2\n\3\2\2\2\4*\3\2\2\2"+
+		"\6E\3\2\2\2\bL\3\2\2\2\n\13\7\3\2\2\13\f\5\4\3\2\f\r\7\2\2\3\r\3\3\2\2"+
+		"\2\16\17\b\3\1\2\17+\7\20\2\2\20\21\7\t\2\2\21\22\5\4\3\2\22\23\7\n\2"+
+		"\2\23+\3\2\2\2\24\25\7\r\2\2\25\26\7\t\2\2\26\27\5\6\4\2\27\30\7\n\2\2"+
+		"\30+\3\2\2\2\31\32\7\16\2\2\32\33\7\t\2\2\33\34\5\b\5\2\34\35\7\n\2\2"+
+		"\35+\3\2\2\2\36\37\7\13\2\2\37 \7\t\2\2 !\5\4\3\2!\"\7\n\2\2\"+\3\2\2"+
+		"\2#$\7\f\2\2$%\7\t\2\2%&\5\4\3\2&\'\7\n\2\2\'+\3\2\2\2()\7\b\2\2)+\7\20"+
+		"\2\2*\16\3\2\2\2*\20\3\2\2\2*\24\3\2\2\2*\31\3\2\2\2*\36\3\2\2\2*#\3\2"+
+		"\2\2*(\3\2\2\2+=\3\2\2\2,-\f\b\2\2-.\7\4\2\2.<\5\4\3\t/\60\f\7\2\2\60"+
+		"\61\7\5\2\2\61<\5\4\3\b\62\63\f\6\2\2\63\64\7\6\2\2\64<\5\4\3\7\65\66"+
+		"\f\5\2\2\66\67\7\7\2\2\67<\5\4\3\689\f\4\2\29:\7\b\2\2:<\5\4\3\5;,\3\2"+
+		"\2\2;/\3\2\2\2;\62\3\2\2\2;\65\3\2\2\2;8\3\2\2\2<?\3\2\2\2=;\3\2\2\2="+
+		">\3\2\2\2>\5\3\2\2\2?=\3\2\2\2@F\5\4\3\2AB\5\4\3\2BC\7\17\2\2CD\5\6\4"+
+		"\2DF\3\2\2\2E@\3\2\2\2EA\3\2\2\2F\7\3\2\2\2GM\5\4\3\2HI\5\4\3\2IJ\7\17"+
+		"\2\2JK\5\b\5\2KM\3\2\2\2LG\3\2\2\2LH\3\2\2\2M\t\3\2\2\2\7*;=EL";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

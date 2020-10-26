@@ -24,7 +24,9 @@ public class SpreadSheetSuperVisitor extends SpreadSheetBaseVisitor<Integer> {
     public Integer visitNumber(SpreadSheetParser.NumberContext ctx) {
         return Integer.parseInt(ctx.NUMBER().getText());
     }
-    @Override public Integer visitUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx) {
+
+    @Override
+    public Integer visitUnarySubtraction(SpreadSheetParser.UnarySubtractionContext ctx) {
         return -Integer.parseInt(ctx.NUMBER().getText());
     }
 
@@ -83,4 +85,16 @@ public class SpreadSheetSuperVisitor extends SpreadSheetBaseVisitor<Integer> {
     public Integer visitRecursiveMAxArgs(SpreadSheetParser.RecursiveMAxArgsContext ctx) {
         return Math.max(this.visit(ctx.expression()), this.visit(ctx.maxargs()));
     }
+
+    @Override
+    public Integer visitIncrement(SpreadSheetParser.IncrementContext ctx) {
+        return this.visit(ctx.inner) + 1;
+
+    }
+
+    @Override
+    public Integer visitDecrement(SpreadSheetParser.DecrementContext ctx) {
+        return this.visit(ctx.inner) - 1;
+    }
+
 }
