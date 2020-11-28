@@ -10,13 +10,13 @@ public class Server {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     private static final String EXIT_STRING = "exit";
-    private static final String ECHO_STRING = "echo ";
-    private static final String ERROR_MESSAGE = "Error";
 
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+
+    private ServerService serverService = new ServerService();
 
 
     public void start(int port) {
@@ -27,11 +27,7 @@ public class Server {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String input;
             while (!EXIT_STRING.equals(input = in.readLine())) {
-                if (input.startsWith(ECHO_STRING)) {
-                    out.println(input.replaceFirst(ECHO_STRING, ""));
-                } else {
-                    out.println(ERROR_MESSAGE);
-                }
+                out.println(serverService.handleMessage(input));
             }
         } catch (IOException e) {
             logger.debug(e.getMessage());
