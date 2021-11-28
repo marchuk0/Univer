@@ -29,12 +29,19 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(resourcesDirectory, "lab1_file.txt"));
         scanner.useDelimiter(Pattern.compile("[.,:;()?!\" \\t\\n\\r]+"));
+        Set<String> set = new HashSet<>();
+        
         while (scanner.hasNext()) {
             String word = scanner.next();
+            String trimWord = word.substring(0, Math.min(word.length(), 30));
             
-            if (checkUniqueLetters(word)) {
-                System.out.println(word);
+            if (checkUniqueLetters(trimWord)) {
+                set.add(trimWord);
             }
+        }
+        
+        for(String str : set) {
+            System.out.println(str);
         }
     }
 }
